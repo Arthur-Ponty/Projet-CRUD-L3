@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<h1>Ajout d'un Commentaire</h1>
+<p class="pull-right">
+    <a href="{{ path('etablissement_commentaires', {'id': id}) }}"><span class="glyphicon glyphicon-th-list"></span> Retour à la liste</a>
+</p>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+    {{ form_row(form.nom_auteur) }}
+    {{ form_row(form.note) }}
+    {{ form_row(form.txt_commentaire) }}
+
+    {{ form_row(form.save, { 'label': (requete) }) }}
+{{ form_end(form) }}
+
+{% endblock %}

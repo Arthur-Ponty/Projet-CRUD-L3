@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<h1>Creation d'un Etablissement</h1>
+<p class="pull-right">
+    <a href="{{ path('etablissement_page', {'nb': app.session.get('page')}) }}"><span class="glyphicon glyphicon-th-list"></span> Retour à la liste</a>
+</p>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+    {{ form_row(form.appelation_officielle) }}
+    {{ form_row(form.denomination) }}
+    {{ form_row(form.secteur) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.longitude) }}
+        </div>
+
+        <div class="col">
+            {{ form_row(form.latitude) }}
+        </div>
+    </div>
+    {{ form_row(form.adresse) }}
+    {{ form_row(form.departement) }}
+    {{ form_row(form.commune) }}
+    {{ form_row(form.region) }}
+    {{ form_row(form.academie) }}
+    {{ form_row(form.date_ouverture) }}
+
+    {{ form_row(form.save, { 'label': (requete) }) }}
+{{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,49 @@
+<style> 
+    table {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    td, th {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    td {
+        background-color: aliceblue;
+    }
+
+    th {
+        background-color: lightblue;
+    }
+</style>
+
+<h1>Commentaires</h1>
+<p class="pull-right">
+    <a href="{{ path('commentaire_add', {'id': id}) }}">Ajouter commentaire</a></br>
+    <a href="{{ path('etablissement_page', {'nb': app.session.get('page')}) }}"><span class="glyphicon glyphicon-th-list"></span> Retour à la liste</a>
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Auteur</th>
+            <th>Date de création</th>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for commentaire in commentaires %}
+            <tr>
+                <td>{{ commentaire.getNomAuteur() }}</td>
+                <td>{{ commentaire.getDateCreation()|date('d/m/Y') }}</td>
+                <td>{{ commentaire.getNote() }}/5</td>
+                <td>{{ commentaire.getTxtCommentaire() }}</td>
+                <td><a href="{{ path('commentaire_update', {'id': id, 'idCommentaire' : commentaire.getId()}) }}">Modifier</a></td>
+                <td><a href="{{ path('commentaire_delete', {'id': id, 'idCommentaire' : commentaire.getId()}) }}">Supprimer</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

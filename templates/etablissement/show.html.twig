@@ -1,0 +1,102 @@
+<style> 
+    table {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    td, th {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    td {
+        background-color: aliceblue;
+    }
+
+    th {
+        background-color: lightblue;
+    }
+</style>
+
+<center>
+    <h1>Etablissements</h1>
+
+    {% if app.session.get('route') == 'etablissement_page' %}
+        <form method="get" action="">
+            <input type="search" name="search" placeholder="Nom établissement">
+            <input type="submit" value="chercher">
+        </form>
+    {% else %}
+        <a href="{{ path('index') }}">Retour</a></br>
+    {% endif %}
+
+    {% if app.session.get('route') == "etablissement_commune" %}
+        <a href="{{ path('commune_carte', { 'id': app.session.get('id') }) }}">Voir la carte</a>
+
+    {% endif %}
+    </br>
+
+    <a href="{{ path('etablissement_add') }}">Ajouter</a>
+    {% if nb > 1 %}
+        <span> - </span>
+        {% if app.session.get('route') == "etablissement_page" %}
+            <a href="{{ path(app.session.get('route'), {'nb': 1 }) }}">Début</a>
+            <a href="{{ path(app.session.get('route'), {'nb': (nb-1) }) }}">Page précédente</a>
+        {% else %}
+            <a href="{{ path(app.session.get('route'), {'nb': 1, 'id': app.session.get('id') }) }}">Début</a>
+            <a href="{{ path(app.session.get('route'), {'nb': (nb-1), 'id': app.session.get('id') }) }}">Page précédente</a>
+        {% endif %}
+    {% endif %}
+
+    <span> - </span>
+    {% for i in -2..2 %}
+        {% if (nb+i-1) <= nbMax and nb+i > 0 and i != 0 %}
+            {% if app.session.get('route') == "etablissement_page" %}
+                <a href="{{ path(app.session.get('route'), {'nb': (nb+i) }) }}">{{nb+i}}</a>
+            {% else %}
+                <a href="{{ path(app.session.get('route'), {'nb': (nb+i), 'id': app.session.get('id') }) }}">{{nb+i}}</a>
+            {% endif %}
+            <span> - </span>
+        {% endif %}
+    {% endfor%}
+
+    {% if nb <= nbMax %}
+        {% if app.session.get('route') == "etablissement_page" %}
+            <a href="{{ path(app.session.get('route'), {'nb': (nb+1) }) }}">Page suivante</a>
+            <a href="{{ path(app.session.get('route'), {'nb': (nbMax+1) }) }}">Fin</a>
+        {% else %}
+            <a href="{{ path(app.session.get('route'), {'nb': (nb+1), 'id': app.session.get('id') }) }}">Page suivante</a>
+            <a href="{{ path(app.session.get('route'), {'nb': (nbMax+1), 'id': app.session.get('id') }) }}">Fin</a>
+        {% endif %}
+    {% endif %}
+</center>
+
+<table>
+    <tr><th>appellation officielle</th><th>denomination</th><th>secteur</th><th>longitude</th><th>latitude</th><th>adresse</th><th>departement</th><th>commune</th><th>region</th><th>academie</th><th>date d'ouverture</th><th> </th><th> </th><th> </th></tr>
+    {% for etablissement in etablissements %}
+        <tr>
+            <td> {{ etablissement.getAppelationOfficielle() }} </td>
+            <td> {{ etablissement.getDenomination() }} </td>
+            <td> {{ etablissement.getSecteur() }} </td>
+            <td> {{ etablissement.getLongitude() }} </td>
+            <td> {{ etablissement.getLatitude() }} </td>
+            <td> {{ etablissement.getAdresse() }} </td>
+            <td> <a href="{{ path('etablissement_departement', {'nb': 1, 'id': etablissement.getDepartement() }) }}">
+                {{ etablissement.getDepartement() }}
+            </a></td>
+            <td> <a href="{{ path('etablissement_commune', {'nb': 1, 'id': etablissement.getCommune() }) }}">
+                {{ etablissement.getCommune() }}
+            </a></td>
+            <td> <a href="{{ path('etablissement_region', {'nb': 1, 'id': etablissement.getRegion() }) }}">
+                {{ etablissement.getRegion() }}
+            </a></td>
+            <td> <a href="{{ path('etablissement_academie', {'nb': 1, 'id': etablissement.getAcademie() }) }}">
+                {{ etablissement.getAcademie() }}
+            </a></td>
+            <td> {{ etablissement.getDateOuverture()|date('Y-m-d') }} </td>
+            <td> <a href="{{ path('etablissement_update', {'id': etablissement.getId() }) }}">Modifier</td>
+            <td> <a href="{{ path('etablissement_delete', {'id': etablissement.getId() }) }}">Supprimer</td>
+            <td> <a href="{{ path('etablissement_commentaires', {'id' : etablissement.getId()}) }}">Voir commentaires</td>
+        </tr>
+    {% endfor %}
+</table>
